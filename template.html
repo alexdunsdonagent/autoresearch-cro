@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meadow View Cottage — Keswick, Cumbria | selfcatering.co.uk</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #333; line-height: 1.6; }
+
+    .hero { position: relative; width: 100%; height: 400px; overflow: hidden; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+    .property-header { padding: 20px 0; }
+    .property-header h1 { font-size: 1.8rem; margin-bottom: 4px; }
+    .property-header .location { color: #666; font-size: 1rem; }
+
+    .key-info { display: flex; gap: 20px; padding: 16px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin: 16px 0; }
+    .key-info .item { text-align: center; }
+    .key-info .item .label { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+    .key-info .item .value { font-size: 1.1rem; font-weight: 600; }
+
+    .price-box { background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 20px 0; }
+    .price-box .from { font-size: 0.9rem; color: #666; }
+    .price-box .price { font-size: 2rem; font-weight: 700; color: #2d7a3a; }
+    .price-box .per-night { font-size: 0.9rem; color: #666; }
+
+    .cta-button {
+      display: block; width: 100%; padding: 16px; margin: 20px 0;
+      background: #2d7a3a; color: white; border: none; border-radius: 8px;
+      font-size: 1.1rem; font-weight: 600; cursor: pointer; text-align: center;
+      text-decoration: none;
+    }
+    .cta-button:hover { background: #246830; }
+
+    .description { padding: 20px 0; }
+    .description h2 { font-size: 1.3rem; margin-bottom: 12px; }
+    .description p { margin-bottom: 12px; color: #555; }
+
+    .features { padding: 20px 0; }
+    .features h2 { font-size: 1.3rem; margin-bottom: 12px; }
+    .features ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .features li { padding: 6px 0; }
+    .features li::before { content: "✓ "; color: #2d7a3a; font-weight: bold; }
+
+    .provider { display: flex; align-items: center; gap: 12px; padding: 16px; background: #f0f7f1; border-radius: 8px; margin: 20px 0; }
+    .provider .via { font-size: 0.85rem; color: #666; }
+    .provider .name { font-weight: 600; }
+
+    @media (max-width: 600px) {
+      .hero { height: 250px; }
+      .property-header h1 { font-size: 1.4rem; }
+      .key-info { flex-wrap: wrap; gap: 12px; }
+      .price-box .price { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <img src="https://placehold.co/1200x400/e8f5e9/2d7a3a?text=Meadow+View+Cottage" alt="Meadow View Cottage, Keswick">
+  </div>
+
+  <div class="container">
+    <div class="property-header">
+      <h1>Meadow View Cottage</h1>
+      <div class="location">Keswick, Cumbria, Lake District</div>
+    </div>
+
+    <div class="key-info">
+      <div class="item">
+        <div class="value">6</div>
+        <div class="label">Sleeps</div>
+      </div>
+      <div class="item">
+        <div class="value">3</div>
+        <div class="label">Bedrooms</div>
+      </div>
+      <div class="item">
+        <div class="value">2</div>
+        <div class="label">Bathrooms</div>
+      </div>
+      <div class="item">
+        <div class="value">★ 4.8</div>
+        <div class="label">Rating</div>
+      </div>
+    </div>
+
+    <div class="price-box">
+      <span class="from">From</span>
+      <span class="price">£95</span>
+      <span class="per-night">per night</span>
+    </div>
+
+    <a href="https://www.sykes.co.uk/cottage/meadow-view-12345" class="cta-button" data-clickout="true">
+      Check Availability
+    </a>
+
+    <div class="description">
+      <h2>About this cottage</h2>
+      <p>Meadow View Cottage is a beautifully restored 19th-century stone cottage nestled on the edge of Keswick, with stunning views across Derwentwater and the surrounding fells.</p>
+      <p>Recently refurbished to a high standard, the cottage blends original character — exposed beams, stone fireplaces — with modern comforts including underfloor heating and a fully equipped kitchen.</p>
+      <p>The cottage is perfectly placed for walking, cycling, and exploring the Lake District. Keswick town centre is a 10-minute walk, with pubs, restaurants, and the famous Pencil Museum nearby.</p>
+    </div>
+
+    <div class="features">
+      <h2>Features</h2>
+      <ul>
+        <li>Dog friendly (max 2)</li>
+        <li>Log burner</li>
+        <li>Free WiFi</li>
+        <li>Private parking</li>
+        <li>Enclosed garden</li>
+        <li>Dishwasher</li>
+        <li>Washing machine</li>
+        <li>Smart TV</li>
+      </ul>
+    </div>
+
+    <div class="provider">
+      <div>
+        <div class="via">Book via</div>
+        <div class="name">Sykes Holiday Cottages</div>
+      </div>
+    </div>
+
+    <a href="https://www.sykes.co.uk/cottage/meadow-view-12345" class="cta-button" data-clickout="true">
+      Book Now — Check Availability
+    </a>
+  </div>
+
+</body>
+</html>
