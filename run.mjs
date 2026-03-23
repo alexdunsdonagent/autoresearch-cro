@@ -15,6 +15,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { spawn } from 'child_process';
 import { scoreTemplate } from './score.mjs';
+import { generateReport } from './report.mjs';
 
 const TEMPLATE = 'template.html';
 const BASELINE_FILE = 'baseline.json';
@@ -76,7 +77,7 @@ function recentResults(n = 5) {
 }
 
 // --- Generate a hypothesis and edit template using Ollama ---
-async function proposeChange(currentHTML, recentExperiments, baseline) {
+async function proposeChange(currentHTML, recentExperiments, baseline, retries = 3) {
   const { default: ollama } = await import('ollama');
   const MODEL = process.env.OLLAMA_MODEL || 'llama3.2';
 
@@ -92,23 +93,56 @@ ${currentHTML}
 
 ---
 
-Now propose ONE small, focused change to template.html to improve the clickout score.
+Propose ONE small, focused change to template.html to improve the clickout score.
 
-Return ONLY a JSON object with:
+You MUST return a JSON object with EXACTLY these 3 keys:
 {
   "hypothesis": "one sentence describing what you're testing",
-  "new_html": "the complete updated template.html content"
+  "find": "the exact string in the current HTML to replace (copy-paste it exactly)",
+  "replace": "the new string to replace it with"
 }
 
-Remember: ONE change only. Do not rewrite the entire page.`;
+Rules:
+- "find" must be an EXACT substring from the current template.html above — copy it precisely
+- "replace" is what it gets changed to
+- Make ONE small change only
+- Do NOT return any other keys`;
 
-  const response = await ollama.chat({
-    model: MODEL,
-    messages: [{ role: 'user', content: prompt }],
-    format: 'json',
-  });
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const response = await ollama.chat({
+        model: MODEL,
+        messages: [{ role: 'user', content: prompt }],
+        format: 'json',
+      });
 
-  return JSON.parse(response.message.content);
+      const parsed = JSON.parse(response.message.content);
+
+      if (!parsed.hypothesis || typeof parsed.hypothesis !== 'string') {
+        throw new Error('Missing hypothesis');
+      }
+      if (!parsed.find || typeof parsed.find !== 'string') {
+        throw new Error(`Missing "find" key (got keys: ${Object.keys(parsed).join(', ')})`);
+      }
+      if (!parsed.replace || typeof parsed.replace !== 'string') {
+        throw new Error(`Missing "replace" key (got keys: ${Object.keys(parsed).join(', ')})`);
+      }
+      if (!currentHTML.includes(parsed.find)) {
+        throw new Error(`"find" string not found in current HTML: "${parsed.find.slice(0, 80)}..."`);
+      }
+
+      // Apply the find/replace to produce new HTML
+      const newHTML = currentHTML.replace(parsed.find, parsed.replace);
+      if (newHTML === currentHTML) {
+        throw new Error('find and replace are identical — no change made');
+      }
+
+      return { hypothesis: parsed.hypothesis, new_html: newHTML };
+    } catch (err) {
+      console.error(`  Attempt ${attempt}/${retries} failed: ${err.message}`);
+      if (attempt === retries) throw new Error(`Model failed after ${retries} attempts: ${err.message}`);
+    }
+  }
 }
 
 // --- Main loop ---
@@ -201,6 +235,10 @@ async function main() {
   console.log('='.repeat(50));
   console.log(`Done. ${allResults.length} experiments, ${kept.length} improvements kept.`);
   console.log(`Final score: ${baseline.composite}/100`);
+
+  // Auto-generate report
+  const reportFile = generateReport();
+  if (reportFile) console.log(`\nReport written to ${reportFile}`);
 
   server.kill();
 }
