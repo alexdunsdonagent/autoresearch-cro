@@ -150,8 +150,9 @@ async function scoreCTA() {
 }
 
 // --- Combined score ---
-export async function scoreTemplate() {
-  const html = readFileSync(TEMPLATE, 'utf8');
+export async function scoreTemplate(filepath) {
+  const file = filepath || TEMPLATE;
+  const html = readFileSync(file, 'utf8');
 
   const [llm, perf, cta] = await Promise.all([
     scoreLLM(html),
